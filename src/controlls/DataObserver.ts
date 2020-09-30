@@ -4,6 +4,8 @@ export class DataObserver<T>{
 
     private callback?: ((value: T) => void) ;
 
+    private arrival = false;
+
     constructor() {
     }
 
@@ -16,6 +18,7 @@ export class DataObserver<T>{
 
     public setValue(value:T){
         this.value = value;
+        this.arrival = true;
         this.fire()
     }
 

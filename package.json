@@ -24,11 +24,13 @@
   "dependencies": {
     "@types/figlet": "^1.2.0",
     "@types/prompts": "^2.0.9",
+    "blaze": "^5.0.0-old",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
     "cli-block": "^1.1.7",
     "commander": "^6.1.0",
     "figlet": "^1.5.0",
+    "link": "^0.1.5",
     "path": "^0.12.7",
     "prompts": "^2.3.2"
   },

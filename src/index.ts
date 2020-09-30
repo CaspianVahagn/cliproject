@@ -1,27 +1,19 @@
 #!/usr/bin/env node
 
 import {ProgramControl} from "./controlls/ProgramControl";
+import chalk from "chalk";
+import figlet from "figlet";
 
-const chalk = require('chalk');
 const clear = require('clear');
-const figlet = require('figlet');
-const path = require('path');
-const program = require('commander');
-
 clear();
 console.log(
     chalk.red(
         figlet.textSync('blaze-cli', { horizontalLayout: 'full' })
     )
 );
-console.log(
-    chalk.red(
-        "sfsfsdfsd"
-    )
-);
+// Beginnt hier
 ProgramControl.init();
 if (!process.argv.slice(2).length) {
-    program.outputHelp();
-
+    ProgramControl.help();
 }
-ProgramControl.showPrompt();
+ProgramControl.startProcess();
