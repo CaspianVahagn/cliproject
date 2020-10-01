@@ -7,6 +7,9 @@ import chalk from "chalk";
 import figlet from "figlet";
 import * as blog from "cli-block"
 import ErrnoException = NodeJS.ErrnoException;
+import Timeout = NodeJS.Timeout;
+import * as readline from 'readline'
+import {publicDecrypt} from "crypto";
 export class ProgramControl {
 
     public static init() {
@@ -20,6 +23,8 @@ export class ProgramControl {
     public  static async startProcess() {
         this.demo();
         await this.examplePrompt();
+        // example for Progress
+        await this.printProgressExample();
         const choices: Choice[] = [
             { title: 'Red', value: '#ff0000' },
             { title: 'Green', value: '#00ff00' },
@@ -73,6 +78,42 @@ export class ProgramControl {
 
         p.then(value => console.log(value))
 
+    }
+
+    public static printProgressExample(): Promise<Timeout>{
+        const timeOutWrapper = { iv : null};
+        let i = 0;
+
+
+        return new Promise(() =>{
+            // @ts-ignore
+            timeOutWrapper.iv = setInterval(() => {
+                ProgramControl.logProcess(i,timeOutWrapper);
+                i++;
+            },200 );
+            return timeOutWrapper.iv;
+        });
+    }
+
+    public static logProcess(percent:number, timeout: any){
+        process.stdout.clearLine(0);
+        process.stdout.cursorTo(0);
+        process.stdout.write('\u2588');
+        for (let i = 0; i < 100; i++){
+            if(i < percent){
+                process.stdout.write(chalk.green('\u25A0'));
+            }else if(i === percent){
+                process.stdout.write(chalk.greenBright('\u25BA'));
+            }else {
+                process.stdout.write(' ');
+            }
+
+        }
+        process.stdout.write('\u2588 ' + chalk.blueBright(percent + "%"));
+        if(percent >= 100){
+            process.stdout.write('\n');
+            clearInterval(timeout.iv);
+        }
     }
 
     public static demo():void{
