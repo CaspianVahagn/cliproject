@@ -10,6 +10,7 @@ import ErrnoException = NodeJS.ErrnoException;
 import Timeout = NodeJS.Timeout;
 import * as readline from 'readline'
 import {publicDecrypt} from "crypto";
+import {inspect} from "util";
 export class ProgramControl {
 
     public static init() {
@@ -31,11 +32,6 @@ export class ProgramControl {
             { title: 'Blue', value: '#0000ff' }
         ];
         const result = this.multiChoice("pick a color",choices);
-        // result.onChange(value => {
-        //     console.log("Picked color" + value);
-        //
-        //     console.log(this.execCMD("java -version").toString());
-        // });
 
     }
 
@@ -80,19 +76,22 @@ export class ProgramControl {
 
     }
 
-    public static printProgressExample(): Promise<Timeout>{
+    public static async printProgressExample(){
         const timeOutWrapper = { iv : null};
         let i = 0;
 
-
-        return new Promise(() =>{
+        return new Promise((resolve, reject) => {
             // @ts-ignore
             timeOutWrapper.iv = setInterval(() => {
-                ProgramControl.logProcess(i,timeOutWrapper);
+                ProgramControl.logProcess(i, timeOutWrapper);
                 i++;
+                if(i>=100){
+                    resolve(true);
+                    // @ts-ignore
+                    clearInterval(timeOutWrapper.iv);
+                }
             },200 );
-            return timeOutWrapper.iv;
-        });
+        })
     }
 
     public static logProcess(percent:number, timeout: any){
@@ -101,35 +100,34 @@ export class ProgramControl {
         process.stdout.write('\u2588');
         for (let i = 0; i < 100; i++){
             if(i < percent){
-                process.stdout.write(chalk.green('\u25A0'));
+                process.stdout.write(chalk.hex(ColorsHex.GREEN)('\u25A0'));
             }else if(i === percent){
-                process.stdout.write(chalk.greenBright('\u25BA'));
+                process.stdout.write(chalk.hex(ColorsHex.GREEN)('\u25BA'));
             }else {
                 process.stdout.write(' ');
             }
 
         }
-        process.stdout.write('\u2588 ' + chalk.blueBright(percent + "%"));
+        process.stdout.write('\u2588 ' + chalk.hex(ColorsHex.BLUE)(percent + "%"));
         if(percent >= 100){
             process.stdout.write('\n');
-            clearInterval(timeout.iv);
         }
     }
 
     public static demo():void{
-        console.log(chalk.rgb(255, 113, 206)(figlet.textSync("Hello baby", "JS Block Letters")));
-        console.log(chalk.rgb(185, 103, 255)(figlet.textSync("Hello baby", {
+        console.log(chalk.hex(ColorsHex.BLUE)(figlet.textSync("Hello baby", "JS Block Letters")));
+        console.log(chalk.hex(ColorsHex.GREEN)(figlet.textSync("Hello baby", {
             font: "SL Script"
         })))
-        console.log(chalk.rgb(1, 205, 254)(figlet.textSync("Hello baby", "Invita")));
-        console.log(chalk.rgb(5, 255, 161)(figlet.textSync("Hello baby", "AMC Thin")));
-        console.log(chalk.rgb(255, 251, 150)(figlet.textSync("Hello baby")));
+        console.log(chalk.hex(ColorsHex.YELLOW)(figlet.textSync("Hello baby", "Invita")));
+        console.log(chalk.hex(ColorsHex.VIOLET)(figlet.textSync("Hello baby", "AMC Thin")));
+        console.log(chalk.hex(ColorsHex.PINK)(figlet.textSync("Hello baby")));
 
 
         console.log(chalk.reset());
         blog.BLOCK_START("Dies ist eine Informatives ding");
         blog.BLOCK_LINE("Bla bla");
-        chalk.rgb(255, 251, 150)(figlet.textSync("Hello baby")).split("\n").forEach(value1 => {
+        chalk.hex(ColorsHex.ORANGE)(figlet.textSync("Hello baby")).split("\n").forEach(value1 => {
             blog.BLOCK_LINE(value1)
         });
         blog.BLOCK_LINE("Cooler Text");
@@ -146,8 +144,17 @@ export class ProgramControl {
             message: 'palim palim?',
         });
         console.log("------");
-        console.log(chalk.green("ich hätte gerne eine flasche ") + chalk.underline(answer.value));
+        console.log(chalk.hex(ColorsHex.GREEN)("ich hätte gerne eine flasche ") + chalk.underline(answer.value));
         console.log("------");
-        console.log("normal " + chalk.bold("fett") + chalk.dim("dünner") + " " + chalk.italic("italic") + chalk.underline("unterstrichen"));
+        console.log("normal " + chalk.bold("fett ") + chalk.dim("dünner ") + " " + chalk.italic("italic ") + chalk.underline("unterstrichen"));
     }
+}
+
+export const ColorsHex ={
+    PINK: '#ff71ce',
+    VIOLET: '#b967ff',
+    YELLOW: '#fffb96',
+    GREEN: '#05ffa1',
+    BLUE: '#01cdfe',
+    ORANGE: '#ff9b83'
 }
