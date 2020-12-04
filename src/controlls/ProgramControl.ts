@@ -24,7 +24,7 @@ export class ProgramControl {
         this.demo();
         await this.examplePrompt();
         // example for Progress
-        await this.printProgressExample();
+        //await this.printProgressExample();
         const choices: Choice[] = [
             { title: 'Red', value: '#ff0000' },
             { title: 'Green', value: '#00ff00' },
