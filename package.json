@@ -7,10 +7,10 @@
     "blaze": "./lib/index.js"
   },
   "scripts": {
-    "start": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
+    "start": "nodemon --watch src/ --exec ts-node src/index.ts -e ts",
     "create": "npm run build && npm run test",
     "build": "tsc -p .",
-    "local": "sudo npm i -g && pizza",
+    "local": "sudo npm i -g && blaze",
     "refresh": "rm -rf ./node_modules ./package-lock.json && npm install"
   },
   "publishConfig": {
@@ -24,7 +24,6 @@
   "dependencies": {
     "@types/figlet": "^1.2.0",
     "@types/prompts": "^2.0.9",
-    "blaze": "^5.0.0-old",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
     "cli-block": "^1.1.7",

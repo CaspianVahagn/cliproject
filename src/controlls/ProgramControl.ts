@@ -16,12 +16,13 @@ export class ProgramControl {
     public static init() {
         commander
             .version('0.0.1')
-            .option("-jo ", "ding dong")
+            .option("-jo ", "ding ok")
             .description("An example CLI With Typescript")
             .parse(process.argv)
+        console.log("hello")
     }
 
-    public  static async startProcess() {
+    public static async startProcess() {
         this.demo();
         await this.examplePrompt();
         // example for Progress
